@@ -140,40 +140,59 @@ namespace GildedTros.App
         [Fact]
         public void UpdateBackStageItemSellInPositive()
         {
-            IList<Item> Items = new List<Item> { new Item { Name = "Backstage passes for Re:factor", SellIn = 15, Quality = 20 } };
+            IList<Item> Items = new List<Item> {
+                new Item { Name = "Backstage passes for Re:factor", SellIn = 15, Quality = 20 },
+                new Item { Name = "Backstage passes for HAXX", SellIn = 15, Quality = 20 }
+            };
             GildedTros app = new GildedTros(Items);
             app.UpdateQuality();
             Assert.Equal(14, Items[0].SellIn);
             Assert.Equal(21, Items[0].Quality);
+            Assert.Equal(14, Items[1].SellIn);
+            Assert.Equal(21, Items[1].Quality);
         }
 
         [Fact]
         public void UpdateBackStageItemSellIn10OrLess()
         {
-            IList<Item> Items = new List<Item> { new Item { Name = "Backstage passes for Re:factor", SellIn = 10, Quality = 20 } };
+            IList<Item> Items = new List<Item> {
+                new Item { Name = "Backstage passes for Re:factor", SellIn = 10, Quality = 20 },
+                new Item { Name = "Backstage passes for HAXX", SellIn = 10, Quality = 20 },
+            };
             GildedTros app = new GildedTros(Items);
             app.UpdateQuality();
             Assert.Equal(9, Items[0].SellIn);
             Assert.Equal(22, Items[0].Quality);
+            Assert.Equal(9, Items[1].SellIn);
+            Assert.Equal(22, Items[1].Quality);
         }
         [Fact]
         public void UpdateBackStageItemSellIn5OrLess()
         {
-            IList<Item> Items = new List<Item> { new Item { Name = "Backstage passes for Re:factor", SellIn = 5, Quality = 20 } };
+            IList<Item> Items = new List<Item> {
+                new Item { Name = "Backstage passes for Re:factor", SellIn = 5, Quality = 20 },
+                new Item { Name = "Backstage passes for HAXX", SellIn = 5, Quality = 20 },
+            };
             GildedTros app = new GildedTros(Items);
             app.UpdateQuality();
             Assert.Equal(4, Items[0].SellIn);
             Assert.Equal(23, Items[0].Quality);
+            Assert.Equal(4, Items[1].SellIn);
+            Assert.Equal(23, Items[1].Quality);
         }
 
         [Fact]
         public void UpdateBackStageItemSellIn0OrLess()
         {
-            IList<Item> Items = new List<Item> { new Item { Name = "Backstage passes for Re:factor", SellIn = 0, Quality = 20 } };
+            IList<Item> Items = new List<Item> {
+                new Item { Name = "Backstage passes for Re:factor", SellIn = 0, Quality = 20 },
+                new Item { Name = "Backstage passes for HAXX", SellIn = 0, Quality = 20 }, };
             GildedTros app = new GildedTros(Items);
             app.UpdateQuality();
             Assert.Equal(-1, Items[0].SellIn);
             Assert.Equal(0, Items[0].Quality);
+            Assert.Equal(-1, Items[1].SellIn);
+            Assert.Equal(0, Items[1].Quality);
         }
 
     }
