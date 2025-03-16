@@ -77,6 +77,10 @@ namespace GildedTros.App
                 {
                     item.Quality -= 2;
                 }
+                if (item.Quality < 0)
+                {
+                    item.Quality = 0;
+                }
             }
             item.SellIn--;
         }
@@ -89,6 +93,10 @@ namespace GildedTros.App
                 if (item.SellIn < 0)
                 {
                     item.Quality--;
+                }
+                if (item.Quality < 0)
+                {
+                    item.Quality = 0;
                 }
             }
             item.SellIn--;
