@@ -18,9 +18,8 @@ namespace GildedTros.App
 
         public void UpdateQuality()
         {
-            for (int i = 0; i < Items.Count; i++)
+            foreach (Item item in Items)
             {
-                Item item = Items[i];
                 bool isSmellyItem = IsSmellyItem(item.Name);
                 bool isBackStagePass = IsBackStagePass(item.Name);
                 bool isLegendaryItem = IsLegendaryItem(item.Name);
@@ -28,26 +27,24 @@ namespace GildedTros.App
 
                 if (isSmellyItem)
                 {
-                    item = UpdateSmellyItem(item);
+                    UpdateSmellyItem(item);
                 }
                 else if (isLegendaryItem)
                 {
-                    item = UpdateLegendaryItem(item);
+                    UpdateLegendaryItem(item);
                 }
                 else if (isGoodItem)
                 {
-                    item = UpdateGoodItem(item);
+                    UpdateGoodItem(item);
                 }
                 else if (isBackStagePass)
                 {
-                    item = UpdateBackStageItem(item);
+                    UpdateBackStageItem(item);
                 }
                 else
                 {
-                    item = UpdateItem(item);
+                    UpdateItem(item);
                 }
-
-                Items[i] = item;
             }
         }
 
@@ -70,42 +67,48 @@ namespace GildedTros.App
         {
             return _goodItems.Contains(name);
         }
-        private Item UpdateSmellyItem(Item item)
+
+        private void UpdateSmellyItem(Item item)
         {
             if (item.Quality > 0)
             {
-                item.Quality = item.Quality - 2;
+                item.Quality -= 2;
+                if (item.SellIn < 0)
+                {
+                    item.Quality -= 2;
+                }
             }
             item.SellIn--;
-            return item;
         }
 
-        private Item UpdateItem(Item item)
+        private void UpdateItem(Item item)
         {
             if (item.Quality > 0)
             {
                 item.Quality--;
+                if (item.SellIn < 0)
+                {
+                    item.Quality--;
+                }
             }
             item.SellIn--;
-            return item;
         }
 
-        private Item UpdateLegendaryItem(Item item)
+        private void UpdateLegendaryItem(Item item)
         {
-            return item;
+            // Legendary items do not change
         }
 
-        private Item UpdateGoodItem(Item item)
+        private void UpdateGoodItem(Item item)
         {
             if (item.Quality < 50)
             {
                 item.Quality++;
             }
             item.SellIn--;
-            return item;
         }
 
-        private Item UpdateBackStageItem(Item item)
+        private void UpdateBackStageItem(Item item)
         {
             if (item.Quality < 50)
             {
@@ -130,7 +133,6 @@ namespace GildedTros.App
             {
                 item.Quality = 0;
             }
-            return item;
         }
     }
 }
