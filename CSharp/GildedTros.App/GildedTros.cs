@@ -1,9 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace GildedTros.App
 {
     public class GildedTros
     {
+        private readonly string[] _smellyItems = { "Duplicate Code", "Long Methods", "Ugly Variable Names" };
+        private readonly string[] _backStagePasses = { "Backstage passes for Re:factor", "Backstage passes for HAXX" };
+        private readonly string[] _legendaryItems = { "B-DAWG Keychain" };
+        private readonly string[] _goodItems = { "Good Wine" };
+
         IList<Item> Items;
         public GildedTros(IList<Item> Items)
         {
@@ -12,82 +18,107 @@ namespace GildedTros.App
 
         public void UpdateQuality()
         {
-            for (var i = 0; i < Items.Count; i++)
+            for (int i = 0; i < Items.Count; i++)
             {
-                if (Items[i].Name != "Good Wine" 
-                    && Items[i].Name != "Backstage passes for Re:factor"
-                    && Items[i].Name != "Backstage passes for HAXX")
+                Item item = Items[i];
+                if (IsSmellyItem(item.Name))
                 {
-                    if (Items[i].Quality > 0)
+                    //TODO
+                }
+
+                if (!IsGoodItem(item.Name)
+                    && !IsBackStagePass(item.Name))
+                {
+                    if (item.Quality > 0)
                     {
-                        if (Items[i].Name != "B-DAWG Keychain")
+                        if (!IsLegendaryItem(item.Name))
                         {
-                            Items[i].Quality = Items[i].Quality - 1;
+                            item.Quality = item.Quality - 1;
                         }
                     }
                 }
                 else
                 {
-                    if (Items[i].Quality < 50)
+                    if (item.Quality < 50)
                     {
-                        Items[i].Quality = Items[i].Quality + 1;
+                        item.Quality = item.Quality + 1;
 
-                        if (Items[i].Name == "Backstage passes for Re:factor"
-                        || Items[i].Name == "Backstage passes for HAXX")
+                        if (IsBackStagePass(item.Name))
                         {
-                            if (Items[i].SellIn < 11)
+                            if (item.SellIn < 11)
                             {
-                                if (Items[i].Quality < 50)
+                                if (item.Quality < 50)
                                 {
-                                    Items[i].Quality = Items[i].Quality + 1;
+                                    item.Quality = item.Quality + 1;
                                 }
                             }
 
-                            if (Items[i].SellIn < 6)
+                            if (item.SellIn < 6)
                             {
-                                if (Items[i].Quality < 50)
+                                if (item.Quality < 50)
                                 {
-                                    Items[i].Quality = Items[i].Quality + 1;
+                                    item.Quality = item.Quality + 1;
                                 }
                             }
                         }
                     }
                 }
 
-                if (Items[i].Name != "B-DAWG Keychain")
+                if (!IsLegendaryItem(item.Name))
                 {
-                    Items[i].SellIn = Items[i].SellIn - 1;
+                    item.SellIn = item.SellIn - 1;
                 }
 
-                if (Items[i].SellIn < 0)
+                if (item.SellIn < 0)
                 {
-                    if (Items[i].Name != "Good Wine")
+                    if (!IsGoodItem(item.Name))
                     {
-                        if (Items[i].Name != "Backstage passes for Re:factor"
-                            && Items[i].Name != "Backstage passes for HAXX")
+                        if (!IsBackStagePass(item.Name))
                         {
-                            if (Items[i].Quality > 0)
+                            if (item.Quality > 0)
                             {
-                                if (Items[i].Name != "B-DAWG Keychain")
+                                if (!IsLegendaryItem(item.Name))
                                 {
-                                    Items[i].Quality = Items[i].Quality - 1;
+                                    item.Quality = item.Quality - 1;
                                 }
                             }
                         }
                         else
                         {
-                            Items[i].Quality = Items[i].Quality - Items[i].Quality;
+                            item.Quality = item.Quality - item.Quality;
                         }
                     }
                     else
                     {
-                        if (Items[i].Quality < 50)
+                        if (item.Quality < 50)
                         {
-                            Items[i].Quality = Items[i].Quality + 1;
+                            item.Quality = item.Quality + 1;
                         }
                     }
                 }
+                Items[i] = item;
             }
         }
+
+        private bool IsSmellyItem(string name)
+        {
+            return _smellyItems.Contains(name);
+        }
+
+        private bool IsBackStagePass(string name)
+        {
+            return _backStagePasses.Contains(name);
+        }
+
+        private bool IsLegendaryItem(string name)
+        {
+            return _legendaryItems.Contains(name);
+        }
+
+        private bool IsGoodItem(string name)
+        {
+            return _goodItems.Contains(name);
+        }
+
     }
 }
