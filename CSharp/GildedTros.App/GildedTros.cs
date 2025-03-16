@@ -20,30 +20,27 @@ namespace GildedTros.App
         {
             foreach (Item item in Items)
             {
-                bool isSmellyItem = IsSmellyItem(item.Name);
-                bool isBackStagePass = IsBackStagePass(item.Name);
-                bool isLegendaryItem = IsLegendaryItem(item.Name);
-                bool isGoodItem = IsGoodItem(item.Name);
+                switch (item.Name)
+                {
+                    case string name when IsSmellyItem(name):
+                        UpdateSmellyItem(item);
+                        break;
 
-                if (isSmellyItem)
-                {
-                    UpdateSmellyItem(item);
-                }
-                else if (isLegendaryItem)
-                {
-                    UpdateLegendaryItem(item);
-                }
-                else if (isGoodItem)
-                {
-                    UpdateGoodItem(item);
-                }
-                else if (isBackStagePass)
-                {
-                    UpdateBackStageItem(item);
-                }
-                else
-                {
-                    UpdateItem(item);
+                    case string name when IsLegendaryItem(name):
+                        UpdateLegendaryItem(item);
+                        break;
+
+                    case string name when IsGoodItem(name):
+                        UpdateGoodItem(item);
+                        break;
+
+                    case string name when IsBackStagePass(name):
+                        UpdateBackStageItem(item);
+                        break;
+
+                    default:
+                        UpdateItem(item);
+                        break;
                 }
             }
         }
