@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GildedTros.App.Domain;
+using GildedTros.App.Factory;
+using System;
 using System.Collections.Generic;
 
 namespace GildedTros.App
@@ -24,19 +26,26 @@ namespace GildedTros.App
                 new Item {Name = "Ugly Variable Names", SellIn = 3, Quality = 6}
             };
 
-            var app = new GildedTros(Items);
+            var transformedItems = new List<IItem>();
+            ItemFactory itemFactory = new();
+            foreach (Item item in Items)
+            {
+                transformedItems.Add(itemFactory.CreateItem(item.Name, item.SellIn, item.Quality));
+            }
+
+            var app = new GildedTros(transformedItems);
 
 
             for (var i = 0; i < 31; i++)
             {
                 Console.WriteLine("-------- day " + i + " --------");
                 Console.WriteLine("name, sellIn, quality");
-                for (var j = 0; j < Items.Count; j++)
+                for (var j = 0; j < transformedItems.Count; j++)
                 {
-                    System.Console.WriteLine(Items[j].Name + ", " + Items[j].SellIn + ", " + Items[j].Quality);
+                    System.Console.WriteLine(transformedItems[j].Name + ", " + transformedItems[j].SellIn + ", " + transformedItems[j].Quality);
                 }
                 Console.WriteLine("");
-                app.UpdateQuality();
+                app.UpdateItem();
             }
         }
     }
